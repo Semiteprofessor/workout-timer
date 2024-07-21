@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import clickSound from "./assets/click.wav";
 
 const Calculator = ({ allowSound, workouts }) => {
@@ -9,6 +9,10 @@ const Calculator = ({ allowSound, workouts }) => {
 
   const [duration, setDuration] = useState(0);
 
+  useEffect(() => {
+    setDuration((number * sets * speed) / 60 + (sets - 1) * durationBreak);
+  }, [number, sets, speed, durationBreak]);
+
   //   const duration = (number * sets * speed) / 60 + (sets - 1) * durationBreak;
   const mins = Math.floor(duration);
   const seconds = (duration - mins) * 60;
@@ -18,6 +22,15 @@ const Calculator = ({ allowSound, workouts }) => {
     const audio = new Audio(clickSound);
     audio.play();
   };
+
+  const handleInc = () => {
+    setDuration((duration) => Math.floor(duration) + 1);
+  };
+
+  const handleDec = () => {
+    setDuration((duration) => (duration > 1 ? Math.ceil(duration) - 1 : 0));
+  };
+
   return (
     <>
       <form>
@@ -40,11 +53,42 @@ const Calculator = ({ allowSound, workouts }) => {
             value={sets}
             onChange={(e) => setSets(+e.target.value)}
           />
+          <span>{sets}</span>
+        </div>
+        <div>
+          <label>How far are you ?</label>
+          <input
+            type="range"
+            min="30"
+            max="180"
+            step="30"
+            value={speed}
+            onChange={(e) => setSpeed(+e.target.value)}
+          />
+          <span>{speed}</span>
+        </div>
+        <div>
+          <label>Break length</label>
+          <input
+            type="range"
+            min="1"
+            max="10"
+            value={durationBreak}
+            onChange={(e) => setDurationBreak(+e.target.value)}
+          />
+          <span>{durationBreak} minutes/break</span>
         </div>
       </form>
+      <section>
+        <button onClick={handleDec}>-</button>
+        <p>
+          {mins < 10 && "0"} {mins}: {seconds < 10 && "0"} {seconds}
+        </p>
+        <button onClick={handleInc}>+</button>
+      </section>
       <button onClick={() => playSound()}>Play</button>
     </>
   );
 };
 
-export default Calculator;
+export default memo(Calculator);
