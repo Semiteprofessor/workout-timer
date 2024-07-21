@@ -1,0 +1,72 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  background-color: #f693f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+main {
+  width: 500px;
+  height: auto;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+main h1 {
+  text-align: center;
+  font-size: 50px;
+  font-style: italic;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  color: #f693f0;
+}
+
+main time {
+  background-color: #e4e3e1;
+  border-radius: 5px;
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  color: #f693f0;
+  font-weight: bold;
+  width: 90%;
+  align-self: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+form div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+}
+
+form label {
+  font-weight: 500;
+}
+
+form div select {
+  outline: none;
+  border: 2px solid #e4e3e1;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
