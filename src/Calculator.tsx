@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import clickSound from "./assets/click.wav";
 
 const Calculator = ({ allowSound, workouts }) => {
@@ -9,19 +9,32 @@ const Calculator = ({ allowSound, workouts }) => {
 
   const [duration, setDuration] = useState(0);
 
+  // const playSound = useCallback(() => {
+  //   if (!allowSound) return;
+  //   const audio = new Audio(clickSound);
+  //   audio.play();
+  // }, [allowSound]);
+
   useEffect(() => {
     setDuration((number * sets * speed) / 60 + (sets - 1) * durationBreak);
   }, [number, sets, speed, durationBreak]);
 
+  useEffect(() => {
+    const playSound = () => {
+      if (!allowSound) return;
+      const audio = new Audio(clickSound);
+      audio.play();
+    };
+    playSound();
+  }, [allowSound, duration]);
+
+  useEffect(() => {
+    document.title = `Your ${number}-exercise workout`;
+  }, [number]);
+
   //   const duration = (number * sets * speed) / 60 + (sets - 1) * durationBreak;
   const mins = Math.floor(duration);
   const seconds = (duration - mins) * 60;
-
-  const playSound = () => {
-    if (!allowSound) return;
-    const audio = new Audio(clickSound);
-    audio.play();
-  };
 
   const handleInc = () => {
     setDuration((duration) => Math.floor(duration) + 1);
@@ -51,7 +64,7 @@ const Calculator = ({ allowSound, workouts }) => {
             min="1"
             max="5"
             value={sets}
-            onChange={(e) => setSets(+e.target.value)}
+            onChange={(e) => setSets(e.target.value)}
           />
           <span>{sets}</span>
         </div>
@@ -63,7 +76,7 @@ const Calculator = ({ allowSound, workouts }) => {
             max="180"
             step="30"
             value={speed}
-            onChange={(e) => setSpeed(+e.target.value)}
+            onChange={(e) => setSpeed(e.target.value)}
           />
           <span>{speed}</span>
         </div>
@@ -74,7 +87,7 @@ const Calculator = ({ allowSound, workouts }) => {
             min="1"
             max="10"
             value={durationBreak}
-            onChange={(e) => setDurationBreak(+e.target.value)}
+            onChange={(e) => setDurationBreak(e.target.value)}
           />
           <span>{durationBreak} minutes/break</span>
         </div>
@@ -86,7 +99,6 @@ const Calculator = ({ allowSound, workouts }) => {
         </p>
         <button onClick={handleInc}>+</button>
       </section>
-      <button onClick={() => playSound()}>Play</button>
     </>
   );
 };
